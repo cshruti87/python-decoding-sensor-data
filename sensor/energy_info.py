@@ -4,11 +4,11 @@ from datetime import date, datetime
 
 class EnergydData(HouseInfo):
     ENERGY_PER_BULB = 0.2
-    ENERGY_BITS = hex(0x0F0)
+    ENERGY_BITS = 0x0F0
 
     def _get_energy(self, rec):
         energy = int(rec, base=16)
-        energy = energy and self.ENERGY_BITS
+        energy = energy & self.ENERGY_BITS
         energy = int(energy) >> 4
         return energy
 
@@ -27,5 +27,5 @@ class EnergydData(HouseInfo):
         return self._convert_data(recs)
 
     def calculate_energy_usage(self, data):
-        total_energy = sum(data["field"] * self.ENERGY_PER_BULB)
+        total_energy = sum([field * self.ENERGY_PER_BULB for field in data])
         return total_energy
